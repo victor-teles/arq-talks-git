@@ -25,7 +25,7 @@ export default function Home() {
             ArqTalks - Do GIT ao desenvolvimento
           </h1>
 
-          <p className="text-xl text-muted-foreground mt-4">19 Junho 2024 | Batalha do git</p>
+          <p className="text-xl text-muted-foreground mt-4">19 Junho 2024 | Batalha de commits</p>
         </span>
         <OauthSignIn />
       </div>

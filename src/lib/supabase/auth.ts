@@ -3,7 +3,7 @@
 import { getURL } from '@/lib/get-url';
 
 import { createClient } from '@/lib/supabase/client';
-import { Provider } from '@supabase/supabase-js';
+import type { Provider } from '@supabase/supabase-js';
 
 export async function signInWithOAuth(e: React.FormEvent<HTMLFormElement>) {
   // Prevent default form submission refresh
