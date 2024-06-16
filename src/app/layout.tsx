@@ -25,7 +25,9 @@ export default function RootLayout({
   return (
     <html className="dark" lang="en">
       <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
-        <Header />
+        <Suspense>
+          <Header />
+        </Suspense>
         <TooltipProvider delayDuration={0}>{children}</TooltipProvider>
         <Suspense>
           <Toaster />
