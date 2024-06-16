@@ -10,6 +10,7 @@ import { type Clients, EventTypes } from './types';
 
 type Props = {
   user: User;
+  hideColegas: boolean;
 };
 
 const randomNumber = Math.trunc(Math.random() * 100);
@@ -96,25 +97,25 @@ export function RealTimeCursors(props: Props) {
 
   return (
     <div className="w-full h-screen p-10 absolute" onMouseMove={onMouseMove}>
-      {Object.keys(newClients).map((clientId) => {
-        const currentClient = newClients[clientId];
+      {!props.hideColegas &&
+        Object.keys(newClients).map((clientId) => {
+          const currentClient = newClients[clientId];
 
-        return (
-          <div key={`container-${clientId}`}>
-            {clientId !== CURRENT_CLIENT_ID && (
-              <Cursor
-                key={clientId}
-                x={currentClient.x}
-                y={currentClient.y}
-                color={[currentClient.color, currentClient.color]}
-                name={currentClient.name}
-                avatar={currentClient.avatar}
-              />
-            )}
-          </div>
-        );
-      })}
-      {/* {props.user.user_metadata.name} */}
+          return (
+            <div key={`container-${clientId}`}>
+              {clientId !== CURRENT_CLIENT_ID && (
+                <Cursor
+                  key={clientId}
+                  x={currentClient.x}
+                  y={currentClient.y}
+                  color={[currentClient.color, currentClient.color]}
+                  name={currentClient.name}
+                  avatar={currentClient.avatar}
+                />
+              )}
+            </div>
+          );
+        })}
     </div>
   );
 }

@@ -1,22 +1,7 @@
 'use client';
 import OauthSignIn from '@/components/oauth-signin';
-// import { EmployeeForm } from "@/components/employee-form";
-import { Button } from '@/components/ui/button';
-import { createClient } from '@/lib/supabase/client';
 
 export default function Home() {
-  async function login() {
-    const supabase = createClient();
-
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'azure',
-      options: {
-        scopes: 'email',
-      },
-    });
-    console.log(data);
-  }
-
   return (
     <main className="flex h-[calc(100%-64px)] flex-col items-center justify-between container  py-24">
       <div className="flex flex-col gap-4 h-52 justify-between items-center">

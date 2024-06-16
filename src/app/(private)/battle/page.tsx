@@ -26,7 +26,7 @@ export default async function Battle({
 
   return (
     <div>
-      {!hideColegas && <RealTimeCursors user={user} />}
+      <RealTimeCursors user={user} hideColegas={hideColegas} />
 
       <ResizablePanelGroup direction="horizontal" className="min-h-[calc(100vh-64px)] border">
         <ResizablePanel defaultSize={50}>
