@@ -8,7 +8,7 @@ import { Separator } from './ui/separator';
 import { Switch } from './ui/switch';
 
 type Props = {
-  hideControls: boolean;
+  hideControls?: boolean;
 };
 
 export default function Header(props: Props) {
