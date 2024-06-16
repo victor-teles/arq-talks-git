@@ -11,12 +11,12 @@ import { type Clients, EventTypes } from './types';
 type Props = {
   user: User;
   hideColegas: boolean;
+  colegasToShow: number;
 };
 
 const randomNumber = Math.trunc(Math.random() * 100);
 const randomColor = `rgb(${randomNumber}%, 30%, 40%)`;
 const CURRENT_CLIENT_ID = nanoid();
-const MAX_CONNECTED_CLIENTS = 20;
 
 const supabase = createClient();
 const channel = supabase.channel('room-arq');
@@ -59,7 +59,7 @@ export function RealTimeCursors(props: Props) {
         presenceValues[clientId] = presenceValue[clientId];
       }
 
-      if (Object.keys(newClients).length === MAX_CONNECTED_CLIENTS) return;
+      if (Object.keys(newClients).length === props.colegasToShow) return;
       setNewClients((preValue) => {
         const updatedClients = Object.keys(presenceValues).reduce<Clients>((acc, curr) => {
           acc[curr] = {
@@ -96,7 +96,7 @@ export function RealTimeCursors(props: Props) {
   }
 
   return (
-    <div className="w-full h-screen p-10 absolute" onMouseMove={onMouseMove}>
+    <div className="w-full h-screen absolute pointer-events-none" onMouseMove={onMouseMove}>
       {!props.hideColegas &&
         Object.keys(newClients).map((clientId) => {
           const currentClient = newClients[clientId];

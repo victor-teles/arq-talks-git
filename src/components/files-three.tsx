@@ -8,7 +8,7 @@ type Props = {
   user?: User;
 };
 
-export function Files(props: Props) {
+export function FilesThree(props: Props) {
   return (
     <div className="flex flex-col gap-2 mt-10">
       <Card>

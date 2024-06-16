@@ -1,10 +1,10 @@
 import { AddCommit } from '@/components/add-commit';
 import { Commits } from '@/components/commits';
-import { Files } from '@/components/files';
+import { FilesDiff } from '@/components/files-diff';
+import { FilesThree } from '@/components/files-three';
 import { Ranking } from '@/components/ranking';
 import { RealTimeCursors } from '@/components/realtime-cursors';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
-import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getUser } from '@/lib/supabase/queries';
 import { createClient } from '@/lib/supabase/server';
@@ -19,6 +19,7 @@ export default async function Battle({
   const supabase = createClient();
   const [user] = await Promise.all([getUser(supabase)]);
   const hideColegas = Boolean(searchParams.hideColeguinhas);
+  const colegasToShow = searchParams.coleguinhasToShow ? Number(searchParams.coleguinhasToShow) : 10;
 
   if (!user) {
     return redirect('/');
@@ -26,14 +27,14 @@ export default async function Battle({
 
   return (
     <div>
-      <RealTimeCursors user={user} hideColegas={hideColegas} />
+      <RealTimeCursors user={user} hideColegas={hideColegas} colegasToShow={colegasToShow} />
 
       <ResizablePanelGroup direction="horizontal" className="min-h-[calc(100vh-64px)] border">
         <ResizablePanel defaultSize={50}>
           <ResizablePanelGroup direction="vertical">
             <ResizablePanel defaultSize={75}>
               <div className="p-6">
-                <Files />
+                <FilesThree />
               </div>
             </ResizablePanel>
             <ResizableHandle withHandle />
@@ -48,10 +49,14 @@ export default async function Battle({
         <ResizablePanel defaultSize={50}>
           <div className="p-6">
             <Tabs defaultValue="commits">
-              <TabsList className="grid w-full grid-cols-2">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="files">Arquivos</TabsTrigger>
                 <TabsTrigger value="commits">Commits</TabsTrigger>
                 <TabsTrigger value="ranking">Ranking</TabsTrigger>
               </TabsList>
+              <TabsContent value="files">
+                <FilesDiff />
+              </TabsContent>
               <TabsContent value="ranking">
                 <Ranking />
               </TabsContent>
