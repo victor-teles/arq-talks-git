@@ -77,26 +77,38 @@ export function RealTimeCursors(props: Props) {
   useEffect(() => {
     channel.on<{ clientId: string }>('presence', { event: 'leave' }, ({ leftPresences }) => {
       const { clientId } = leftPresences[0];
+
       removeClient(clientId);
     });
   }, [removeClient]);
 
-  function onMouseMove(event: React.MouseEvent<HTMLDivElement>) {
+  function onMouseMove(event: MouseEvent) {
+    const name = props.user?.user_metadata?.name ?? 'Desconhecido';
+    const avatar = props.user?.user_metadata?.picture ?? `https://avatar.vercel.sh/${name}`;
+
     throttledChannelTrack({
       [CURRENT_CLIENT_ID]: {
         ...newClients[CURRENT_CLIENT_ID],
         eventType: EventTypes.MoveMouse,
         color: randomColor,
-        name: props.user.user_metadata.name,
-        avatar: props.user.user_metadata.picture,
+        name,
+        avatar,
         x: event.clientX,
         y: event.clientY,
       },
     });
   }
 
+  useEffect(() => {
+    window.addEventListener('mousemove', onMouseMove);
+
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+    };
+  }, []);
+
   return (
-    <div className="w-full h-screen absolute pointer-events-none" onMouseMove={onMouseMove}>
+    <div className="w-full h-screen absolute pointer-events-none z-40">
       {!props.hideColegas &&
         Object.keys(newClients).map((clientId) => {
           const currentClient = newClients[clientId];

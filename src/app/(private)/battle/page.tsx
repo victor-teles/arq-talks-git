@@ -9,6 +9,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getUser } from '@/lib/supabase/queries';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
+import '@/lib/commit-game';
 
 export default async function Battle({
   searchParams,
@@ -30,7 +32,7 @@ export default async function Battle({
       <RealTimeCursors user={user} hideColegas={hideColegas} colegasToShow={colegasToShow} />
 
       <ResizablePanelGroup direction="horizontal" className="min-h-[calc(100vh-64px)] border">
-        <ResizablePanel defaultSize={50}>
+        <ResizablePanel defaultSize={35}>
           <ResizablePanelGroup direction="vertical">
             <ResizablePanel defaultSize={75}>
               <div className="p-6">
@@ -40,13 +42,13 @@ export default async function Battle({
             <ResizableHandle withHandle />
             <ResizablePanel defaultSize={25}>
               <div className="p-6">
-                <AddCommit />
+                <AddCommit user={user} />
               </div>
             </ResizablePanel>
           </ResizablePanelGroup>
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={50}>
+        <ResizablePanel defaultSize={65}>
           <div className="p-6">
             <Tabs defaultValue="commits">
               <TabsList className="grid w-full grid-cols-3">
@@ -58,10 +60,14 @@ export default async function Battle({
                 <FilesDiff />
               </TabsContent>
               <TabsContent value="ranking">
-                <Ranking />
+                <Suspense fallback={<div>Carregando ranking...</div>}>
+                  <Ranking />
+                </Suspense>
               </TabsContent>
               <TabsContent value="commits">
-                <Commits />
+                <Suspense fallback={<div>Carregando commits...</div>}>
+                  <Commits />
+                </Suspense>
               </TabsContent>
             </Tabs>
           </div>

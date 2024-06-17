@@ -15,6 +15,9 @@ export default function Header(props: Props) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
+  const urlParams = new URLSearchParams(searchParams);
+  const hideColeguinhas = urlParams.get('hideColeguinhas');
+  const coleguinhasToShow = urlParams.get('coleguinhasToShow');
 
   function onHideColeguinhasChanged(checked: boolean) {
     const params = new URLSearchParams(searchParams);
@@ -45,7 +48,7 @@ export default function Header(props: Props) {
 
       {!props.hideControls && (
         <div className="flex items-center space-x-4">
-          <Select defaultValue="10" onValueChange={onColeguinhasCountChanged}>
+          <Select defaultValue={coleguinhasToShow ?? '10'} onValueChange={onColeguinhasCountChanged}>
             <SelectTrigger className="w-[80px]">
               <SelectValue placeholder="Colegas" />
             </SelectTrigger>
@@ -61,7 +64,11 @@ export default function Header(props: Props) {
             </SelectContent>
           </Select>
           <Separator orientation="vertical" />
-          <Switch id="hide-coleguinhas" onCheckedChange={onHideColeguinhasChanged} />
+          <Switch
+            checked={hideColeguinhas === 'true'}
+            id="hide-coleguinhas"
+            onCheckedChange={onHideColeguinhasChanged}
+          />
           <Label htmlFor="hide-coleguinhas">Não quero ver meus colegas</Label>
         </div>
       )}

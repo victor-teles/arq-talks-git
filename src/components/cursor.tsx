@@ -1,4 +1,5 @@
 'use client';
+import { getInitials } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import React, { useMemo } from 'react';
 import styles from './cursor.module.css';
@@ -87,19 +88,4 @@ function AvatarCursor({ color, avatar, size, name }: CursorProps) {
       </div>
     </div>
   );
-}
-
-function getInitials(fullName: string | null | undefined) {
-  if (!fullName) return '';
-
-  const allNames = fullName.trim().split(' ');
-  const initials = allNames.reduce((acc, curr, index) => {
-    let acculumator = acc;
-
-    if (index === 0 || index === allNames.length - 1) {
-      acculumator = `${acc}${curr.charAt(0).toUpperCase()}`;
-    }
-    return acculumator;
-  }, '');
-  return initials;
 }

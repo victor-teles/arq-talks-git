@@ -1,7 +1,8 @@
 'use client';
-
 import type { User } from '@supabase/supabase-js';
-import ReactDiffViewer from 'react-diff-viewer';
+import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { stackoverflowDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 type Props = {
   user?: User;
@@ -30,13 +31,29 @@ if(a === 10) {
 const newStyles = {
   variables: {
     dark: {
-      gutterBackground: '#000',
-      diffViewerBackground: '#000',
+      gutterBackground: '#0e1116',
+      diffViewerBackground: '#0e1116',
+      emptyLineBackground: '#0e1116',
       highlightBackground: '#fefed5',
       highlightGutterBackground: '#ffcd3c',
     },
   },
 };
+
+function renderHighlight(codeBlock: string) {
+  return (
+    <SyntaxHighlighter
+      language="javascript"
+      style={stackoverflowDark}
+      customStyle={{
+        padding: 0,
+        background: 'transparent',
+      }}
+    >
+      {codeBlock}
+    </SyntaxHighlighter>
+  );
+}
 
 export function FilesDiff(props: Props) {
   return (
@@ -45,9 +62,12 @@ export function FilesDiff(props: Props) {
         styles={newStyles}
         oldValue={oldCode}
         newValue={newCode}
-        splitView={false}
+        splitView={true}
         useDarkTheme
         showDiffOnly={false}
+        disableWordDiff={false}
+        compareMethod={DiffMethod.WORDS_WITH_SPACE}
+        renderContent={renderHighlight}
       />
     </div>
   );

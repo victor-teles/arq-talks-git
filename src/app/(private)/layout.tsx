@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
 import '../globals.css';
+import Provider from '@/components/provider';
 import { Suspense } from 'react';
 
 const fontSans = FontSans({
@@ -27,7 +28,7 @@ export default function RootLayout({
         <Suspense>
           <Header />
         </Suspense>
-        {children}
+        <Provider>{children}</Provider>
         <Toaster />
       </body>
     </html>
