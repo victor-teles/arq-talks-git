@@ -1,15 +1,14 @@
 'use client';
 
 import type { Tables } from '@/lib/database.types';
-import { listCommits } from '@/lib/queries';
 import { createClient } from '@/lib/supabase/client';
 import { getInitials } from '@/lib/utils';
-import type { User } from '@supabase/supabase-js';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
+import { listCommits } from '@/lib/supabase/queries';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Badge } from './ui/badge';
 import { Card, CardDescription, CardHeader, CardTitle } from './ui/card';
@@ -28,7 +27,6 @@ export function Commits() {
     queryFn: () => listCommits(supabase),
   });
   const commits = listCommitsQuery.data;
-
   const noCommit = !commits || commits?.length === 0;
 
   return (
@@ -71,7 +69,7 @@ function CommitMessage({ commit }: { commit: Commit }) {
         </div>
 
         <Badge>
-          {commit.points < 0 ? '-' : '+'}
+          {commit.points < 0 ? '' : '+'}
           {commit.points} pontos
         </Badge>
       </CardHeader>

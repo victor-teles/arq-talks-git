@@ -6,7 +6,7 @@ import { Ranking } from '@/components/ranking';
 import { RealTimeCursors } from '@/components/realtime-cursors';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { getUser } from '@/lib/supabase/queries';
+import { getGame, getUser } from '@/lib/supabase/queries';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
@@ -20,12 +20,14 @@ export default async function Battle({
 }) {
   const supabase = createClient();
   const [user] = await Promise.all([getUser(supabase)]);
+
   const hideColegas = Boolean(searchParams.hideColeguinhas);
   const colegasToShow = searchParams.coleguinhasToShow ? Number(searchParams.coleguinhasToShow) : 10;
 
   if (!user) {
     return redirect('/');
   }
+  const [game] = await Promise.all([getGame(supabase, user.id)]);
 
   return (
     <div>
@@ -42,7 +44,7 @@ export default async function Battle({
             <ResizableHandle withHandle />
             <ResizablePanel defaultSize={25}>
               <div className="p-6">
-                <AddCommit user={user} />
+                <AddCommit user={user} game={game} />
               </div>
             </ResizablePanel>
           </ResizablePanelGroup>
@@ -60,12 +62,12 @@ export default async function Battle({
                 <FilesDiff />
               </TabsContent>
               <TabsContent value="ranking">
-                <Suspense fallback={<div>Carregando ranking...</div>}>
-                  <Ranking />
+                <Suspense fallback={<p className="leading-7 [&:not(:first-child)]:mt-6">Carregando ranking...</p>}>
+                  <Ranking user={user} />
                 </Suspense>
               </TabsContent>
               <TabsContent value="commits">
-                <Suspense fallback={<div>Carregando commits...</div>}>
+                <Suspense fallback={<p className="leading-7 [&:not(:first-child)]:mt-6">Carregando commits...</p>}>
                   <Commits />
                 </Suspense>
               </TabsContent>

@@ -1,4 +1,5 @@
 'use client';
+import { useGame } from '@/lib/game-provider';
 import type { User } from '@supabase/supabase-js';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
 import SyntaxHighlighter from 'react-syntax-highlighter';
@@ -7,26 +8,6 @@ import { stackoverflowDark } from 'react-syntax-highlighter/dist/esm/styles/hljs
 type Props = {
   user?: User;
 };
-
-const oldCode = `
-const a = 10
-const b = 10
-const c = () => console.log('foo')
-
-if(a > 10) {
-  console.log('bar')
-}
-
-console.log('done')
-`;
-const newCode = `
-const a = 10
-const boo = 10
-
-if(a === 10) {
-  console.log('bar')
-}
-`;
 
 const newStyles = {
   variables: {
@@ -56,13 +37,15 @@ function renderHighlight(codeBlock: string) {
 }
 
 export function FilesDiff(props: Props) {
+  const { game } = useGame();
+
   return (
     <div className="flex flex-col gap-2 mt-10">
       <ReactDiffViewer
         styles={newStyles}
-        oldValue={oldCode}
-        newValue={newCode}
-        splitView={true}
+        oldValue={game?.getCurrentFile()?.original}
+        newValue={game?.getCurrentFile()?.changed}
+        splitView={false}
         useDarkTheme
         showDiffOnly={false}
         disableWordDiff={false}

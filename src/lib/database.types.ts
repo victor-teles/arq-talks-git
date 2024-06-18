@@ -39,19 +39,51 @@ export type Database = {
         }
         Relationships: []
       }
+      game: {
+        Row: {
+          createdAt: string
+          filePosition: number | null
+          finishedAt: string | null
+          userId: string
+        }
+        Insert: {
+          createdAt?: string
+          filePosition?: number | null
+          finishedAt?: string | null
+          userId: string
+        }
+        Update: {
+          createdAt?: string
+          filePosition?: number | null
+          finishedAt?: string | null
+          userId?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       ranking: {
         Row: {
           author: string | null
           pictureUrl: string | null
-          sum: number | null
+          points: number | null
           userId: string | null
         }
         Relationships: []
       }
     }
     Functions: {
+      get_my_ranking: {
+        Args: {
+          userid: string
+        }
+        Returns: {
+          author: string | null
+          pictureUrl: string | null
+          points: number | null
+          userId: string | null
+        }[]
+      }
       list_ranking: {
         Args: {
           maxranking?: number
@@ -59,7 +91,7 @@ export type Database = {
         Returns: {
           author: string | null
           pictureUrl: string | null
-          sum: number | null
+          points: number | null
           userId: string | null
         }[]
       }
